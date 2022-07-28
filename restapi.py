@@ -49,13 +49,34 @@ def get_by_course_name(name):
     except:
         return "course not found"
 
-@app.route("/courses", methods= ['POST'])
+@app.route("/courses", methods=['POST'])
+#except get method, other http methods should runned in 2 terminals
+#the command used in 2nd terminal is "curl -i -H "Content-type:Application/json" -X POST http://localhost:5000/courses"
+#where -i => status code, -H => header format, "Content-type:Application/json" => return type format, -X POST => http method and thn url
 def post_course():
     course = {'name': 'java script programming',
             'id': '5',
             'desc': 'awesome course'}
     courses.append(course)
-    return jsonify({'created': course})
+    return jsonify({'Created': course})
+
+@app.route("/courses/<int:id>", methods=["PUT"])
+#here when you specifiy "id" you should provide it in form of index number
+#the command used in 2nd terminal is "curl -i -H "Content-type:Application/json" -X PUT http://localhost:5000/courses/"id_number(index number)""
+#where -i => status code, -H => header format, "Content-type:Application/json" => return type format, -X POST => http method and thn url
+def put_value(id):
+    courses[id]['desc'] = "luxurious course"
+    return jsonify({'Courses': courses[id]})
+
+@app.route("/courses/<int:id>", methods=["DELETE"])
+#here when you specifiy "id" you should provide it in form of index number
+#the command used in 2nd terminal is "curl -i -H "Content-type:Application/json" -X DELETE http://localhost:5000/courses/"id_number(index number)""
+#where -i => status code, -H => header format, "Content-type:Application/json" => return type format, -X POST => http method and thn url
+def delete_course(id):
+    courses.remove(courses[id])
+    return jsonify({"result": True})
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
